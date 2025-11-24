@@ -17,24 +17,51 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a password"],
     },
+
+    phone_number: { 
+    type: String, 
+    required: true,
+    match: /^\d{10,}$/ // Must be at least 10 digits
+    },
+
+    gender: { 
+    type: String, 
+    required: true,
+    enum: ["Male", "Female", "Other"]
+    },
+
+    date_of_birth: { type: Date, required: true },
+    membership_status: { 
+    type: String, 
+    required: true,
+    enum: ["Active", "Inactive", "Suspended"]
+    
+    },
   },
+
   {
     timestamps: true,
   }
 );
 
 // static signup method
-userSchema.statics.signup = async function (name, email, password) {
+userSchema.statics.signup = async function (name, email, password, phone_number, gender, date_of_birth, membership_status) {
   // validation
+
+ 
   if ((!name, !email || !password)) {
     throw Error("Please add all fields");
   }
+
   if (!validator.isEmail(email)) {
     throw Error("Email not valid");
   }
+
   if (!validator.isStrongPassword(password)) {
     throw Error("Password not strong enough");
   }
+
+ 
 
   const userExists = await this.findOne({ email });
 
@@ -49,6 +76,10 @@ userSchema.statics.signup = async function (name, email, password) {
     name,
     email,
     password: hashedPassword,
+    phone_number,
+    gender,
+    date_of_birth,
+    membership_status,
   });
 
   return user;
