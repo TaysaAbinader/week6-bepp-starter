@@ -33,7 +33,7 @@ const getTourById = async (req, res) => {
 
   try {
     const user_id = req.user._id;
-    const tour = await Tour.findById({tourId, user_id});
+    const tour = await Tour.findById({_id: tourId, user_id});//we added _id: before tourId (Iter 5)
     if (tour) {
       res.status(200).json(tour);
     } else {
@@ -55,8 +55,7 @@ const updateTour = async (req, res) => {
   try {
     const user_id =req.user._id;
     const updatedTour = await Tour.findOneAndUpdate(
-      {user_id},
-      { _id: tourId },
+      { _id: tourId, user_id },//we needed to add user_id inside the same {} as tourId, it was separeted before.(iter 5)
       { ...req.body },
       { new: true }
     );

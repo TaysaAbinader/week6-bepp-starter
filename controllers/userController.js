@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const validator = require('validator');
 
 // Generate JWT
 const generateToken = (_id) => {
@@ -27,6 +28,19 @@ const signupUser = async (req, res) => {
   const chooseMembership = ["Active", "Inactive", "Suspended"]
   if (!chooseMembership.includes(membership_status)){
     return res.status(400).json({message: "Invalid membership"});
+  }
+
+  //Validate phone
+  if(!/^\d{10,}$/.test(phone_number)) {
+    return res.status(400).json({message: "Invalid phone number (must be 10 digits)"});
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  if (!validator.isStrongPassword(password)) {
+    return res.status(400).json({ error: "Password is too weak" });
   }
 
 
