@@ -18,24 +18,24 @@ const userSchema = mongoose.Schema(
       required: [true, "Please add a password"],
     },
 
-    phone_number: { 
-    type: String, 
+    phone_number: {
+    type: String,
     required: true,
-    match: /^\d{10,}$/ // Must be at least 10 digits
+    match: /^\d{10,}$/ // Must be at least 10 (ten) digits
     },
 
-    gender: { 
-    type: String, 
+    gender: {
+    type: String,
     required: true,
     enum: ["Male", "Female", "Other"]
     },
 
     date_of_birth: { type: Date, required: true },
-    membership_status: { 
-    type: String, 
+    membership_status: {
+    type: String,
     required: true,
     enum: ["Active", "Inactive", "Suspended"]
-    
+
     },
   },
 
@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema(
 userSchema.statics.signup = async function (name, email, password, phone_number, gender, date_of_birth, membership_status) {
   // validation
 
- 
+
   if ((!name, !email || !password)) {
     throw Error("Please add all fields");
   }
@@ -61,7 +61,7 @@ userSchema.statics.signup = async function (name, email, password, phone_number,
     throw Error("Password not strong enough");
   }
 
- 
+
 
   const userExists = await this.findOne({ email });
 
